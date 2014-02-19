@@ -1,0 +1,41 @@
+@CHARSET "ISO-8859-1";
+
+body, input, select {
+	font-family: 'Quicksand', Tahoma, sans-serif;
+}
+
+body {
+	background-color: #e6e6e6;
+	color: #262626;
+}
+
+#navigation_bar {
+	background-image: linear-gradient(to top, #171717 10%, #111111 10%);
+	color: #fff;
+}
+
+#navigation_bar a,
+#navigation_bar a:hover {
+	text-decoration: none;
+	font-size: 14pt;
+	color: #fff;
+}
+
+#navigation_bar .left a{
+	font-size: 30pt;
+}
+
+#navigation_bar input[type='text'] {
+	border: 0px;
+	background-color: #fff;
+	color: #000;
+}
+
+#input_search, #input_category {
+	font-size: 14pt;
+}
+
+
+.category_block {
+	background-color: #383838;
+}
