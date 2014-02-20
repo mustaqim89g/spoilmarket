@@ -5,6 +5,7 @@
 function AnimationStage(stageDivName, prefix, elementWidth, elementHeight) {
 	
 	this.displayIndex = -1;
+	this.actualIndex = -1;
 	this.stageDivName = stageDivName;
 	this.stageDiv = $('#' + stageDivName);
 	this.elementWidth = elementWidth;
@@ -26,6 +27,7 @@ function AnimationStage(stageDivName, prefix, elementWidth, elementHeight) {
 	this.addElement = function(element) {
 		
 		element.displayIndex = element.displayIndex || ++this.displayIndex;
+		element.actualIndex = element.actualIndex || ++this.actualIndex;
 		element.elementIsVisible = element.elementIsVisible || true;
 		element.stageX = element.stageX || 0;
 		element.stageY = element.stageY || 0;
@@ -57,7 +59,7 @@ function AnimationStage(stageDivName, prefix, elementWidth, elementHeight) {
 	}
 	
 	this.getElementName = function(element) {
-		var elementName = 'stage-' + this.prefix + '-' + element.displayIndex;
+		var elementName = 'stage-' + this.prefix + '-' + element.actualIndex;
 		return elementName;
 	}
 	
@@ -180,29 +182,32 @@ function AnimationStage(stageDivName, prefix, elementWidth, elementHeight) {
 	this.animateFilter = function(speed) {
 		try
 		{
-		this.filter();
-		this.calculatePreliminaryPosition();
-		
-		for (var i = 0; i < this.elements.length; i++) {
-			var element = this.elements[i];
-			var elementName = this.getElementName(element);
+			this.filter();
+			this.calculatePreliminaryPosition();
 			
-			var dom = $('#' + elementName);
-			if (element.elementIsVisible) {
-				$('#' + elementName).show();
-				$('#' + elementName).animate({
-					top: element.stageY + 'px',
-					left: element.stageX + 'px',
-					opacity: 1.0
-				}, speed, function() {});
+			for (var i = 0; i < this.elements.length; i++) {
+				var element = this.elements[i];
+				var elementName = this.getElementName(element);
+	
+				if (element.elementIsVisible) {
+					$('#' + elementName).show();
+					$('#' + elementName).stop(true, true);
+					$('#' + elementName).animate({
+						top: element.stageY + 'px',
+						left: element.stageX + 'px',
+						opacity: 1.0
+					}, speed, function() {});
+				}
+				else {
+					$('#' + elementName).stop(true, true);
+					$('#' + elementName).animate({
+						opacity: 0.0
+					}, speed, function() { 
+						//$('#' + elementName).hide(); 
+					});
+				}
+				
 			}
-			else {
-				$('#' + elementName).animate({
-					opacity: 0.0
-				}, speed, function() {this.hide()});
-			}
-			
-		}
 		}
 		catch (eee) {alert(eee);}
 		
@@ -256,13 +261,14 @@ function AnimationStage(stageDivName, prefix, elementWidth, elementHeight) {
 		for (var i = 0; i < this.elements.length; i++) {
 			var element = this.elements[i];
 			var elementName = this.getElementName(element);
+			var index = element.actualIndex;
 			
 			$('#' + elementName).animate({
 				top: element.stageY + 'px',
 				left: element.stageX + 'px',
 				opacity: 0.0
-			}, speed, function() {
-				this.hide();
+			}, speed, function() {			
+				$(this).hide();
 			});
 			
 		}

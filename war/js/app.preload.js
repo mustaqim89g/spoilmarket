@@ -8,6 +8,11 @@ var bestDenki = new Company(2, 'Best Denski');
 
 var highestBudget = 2200;
 
+var CURRENT_VIEW_CATEGORY = 1;
+var CURRENT_VIEW_PRODUCT = 2;
+var currentView = CURRENT_VIEW_CATEGORY;
+
+var sliderTimeOut = null;
 
 function addProduct(imageUrl, id, brand, model, description, hnPrice, cPrice, dbPrice, os, ram, proc, procSpeed, hdd, gpu, gpuSpeed, screen, screenType) {
 	var product = new Product();
@@ -35,9 +40,6 @@ function addProduct(imageUrl, id, brand, model, description, hnPrice, cPrice, db
 	productStage.addElement(product);
 }
 
-
-
-
 try
 {
 	categoryStage = new AnimationStage('category_block_wrapper', 'cat_stage', 400, 200);
@@ -50,6 +52,7 @@ try
 		animationStage.animateExit(750, function() {
 			try {
 					$('#search').show();
+					currentView = CURRENT_VIEW_PRODUCT;
 					productStage.animateEntrance(750, function() {
 						$('#category').hide();
 						$('#toolbanner_heading').hide();
@@ -64,9 +67,9 @@ try
 		});
 	}
 	
-	productStage = new AnimationStage('product_block_wrapper', 'prod_stage', 225, 300);
+	productStage = new AnimationStage('product_block_wrapper', 'prod_stage', 350, 300);
 	productStage.elementFrame = 
-		'<div class="product_block"><div class="product_block_image" style="background-image: url($$$URL$$$); background-size: contain; background-repeat: no-repeat;"></div>' +
+		'<div class="product_block"><div class="product_block_image" style="background-image: url($$$URL$$$); background-size: cover; background-repeat: no-repeat;"></div>' +
 		'<div class="product_detail"><div class="product_detail_brand">$$$BRAND$$$</div><div>$$$MODEL$$$</div><div style="height: 10px"></div><div>' +
 		'<table><tr><td>Harvey Norman</td><td>$$$$HNPRICE$$$</td></tr><tr><td>Courts</td><td>$$$$CPRICE$$$</td></tr><tr><td>Best Denki</td><td>$$$$BDPRICE$$$</td></tr></table></div></div></div>';
 	productStage.mapElement = function(element, frame) {
@@ -101,7 +104,9 @@ try
 			addProduct('hp_envy_15.1_1.jpg', '8', 'HP', 'ENVY TouchSmart 15-j005TX', 'Standout performance. Inside and out.', '', '', '1599','Windows 8', '8 GB', '4th generation Intel® Core™ i7-4700MQ Processor', '2.4GHz', '750GB', 'NVIDIA® GeForce® GT 740M switchable Graphics ', '2G DDR3 VRAM','Touch', '15.6 "');
 			addProduct('hp_dv6.2.jpg', '9', 'HP', 'DV6-7309TX', 'With full HD Screen', '', '', '1699','Windows 8', '8 GB', 'Intel® Core™ i7-3630QM Processor', '2.4GHz', '1TB HDD', 'Nvidia® Geforce® GT650M ', '2GB DDR5','Full HD', '15.6"');
 			addProduct('toshiba_p50.1.jpg', '10', 'Toshiba', 'Satellite® P50-A100X', 'Powerful yet portable, the entertainment-optimized Satellite® P50 series laptop provides an elegant touchscreen1 PC experience with Windows® 8. With a 15.6” diagonal, Full HD, TruBrite® display, Harman Kardon® speakers, modernized design, an exquisite, frameless, LED-backlit keyboard and many other premium features, this laptop is ideal for work or play.', '', '', '1699','Windows 8 Premium with Chinese OS', '8 GB', 'Intel® Core™ I7-4700QM', '2.4GHz', '1TB', 'Nvidia® Geforce® GT740M', '4GB VRam','Touch', '15.6"');
+			addProduct('toshiba_p50.1.jpg', '11', 'Toshiba', 'Satellite® P50-A100X', 'Powerful yet portable, the entertainment-optimized Satellite® P50 series laptop provides an elegant touchscreen1 PC experience with Windows® 8. With a 15.6” diagonal, Full HD, TruBrite® display, Harman Kardon® speakers, modernized design, an exquisite, frameless, LED-backlit keyboard and many other premium features, this laptop is ideal for work or play.', '', '', '1699','Windows 8 Premium with Chinese OS', '8 GB', 'Intel® Core™ I7-4700QM', '2.4GHz', '1TB', 'Nvidia® Geforce® GT740M', '4GB VRam','Touch', '15.6"');
 
+			
 			productStage.search = function(element) {
 				var hnPrice = element.productStores[harveyNorman.id].price;
 				var cPrice = element.productStores[courts.id].price;
@@ -118,15 +123,41 @@ try
 			$("#slider-value").bind("slider:changed", function (event, data) {
 				try {
 				  // The currently selected value of the slider
-				  $('#slider-value-display').html('$' + Math.round(data.value, 2));
-				  highestBudget = Math.round(data.value, 2);
-				  productStage.animateFilter(750);
+					$('#slider-value-display').html('$' + Math.round(data.value, 2));
+					clearTimeout(sliderTimeOut);
+					sliderTimeOut = setTimeout(function() {
+						  highestBudget = Math.round(data.value, 2);
+						  productStage.animateFilter(750);
+					}, 100);
+
 				}
 				catch (mm) {
 					alert(mm);
 				}
-				});
+			});
 
+			$(window).resize(function() {
+				if (currentView == CURRENT_VIEW_CATEGORY) {
+					categoryStage.animateFilter();
+				}
+				else {
+					productStage.animateFilter();
+				}
+			});
+			
+			$('#nav-home').click(function() {
+				if (currentView == CURRENT_VIEW_PRODUCT) {
+					currentView = CURRENT_VIEW_CATEGORY;
+					$('#category').show();
+					productStage.animateExit(750, function() {
+						$('#search').hide();
+						$('#toolbanner_heading').show();
+						$('#price_range_heading').hide();
+						categoryStage.animateEntrance(750, function() {});
+					});
+				}
+			});
+			
 			//alert(JSON.stringify(categoryStage, null, 4));
 			categoryStage.animateEntrance(750);
 			
