@@ -1,10 +1,10 @@
 /**
  * 
  */
-function Company() {
+function Company(id, name) {
 	
-	this.id = 0;
-	this.name = '';
+	this.id = id;
+	this.name = name;
 	
 }
 
@@ -19,25 +19,26 @@ function Store() {
 	
 }
 
-function Category(id, name) {
+function Category(id, name, imageUrl) {
 	
 	this.id = id;
 	this.name = name;
+	this.imageUrl = imageUrl;
 	
 }
 
-function ProductStore() {
+function ProductStore(product, company, price) {
 	
-	this.product = null;
-	this.store = null;
-	this.price = 1000.0;
+	this.product = product;
+	this.company = company;
+	this.price = price;
 	
 }
 
-function ProductAttribute() {
+function ProductAttribute(attribute, value) {
 	
-	this.attribute = '';
-	this.value = '';
+	this.attribute = attribute;
+	this.value = value;
 	
 }
 
@@ -46,9 +47,9 @@ function Product() {
 	this.id = 0;
 	this.name = '';
 	this.category = null;
-	this.productStores = [];
+	this.productStores = {};
 	this.imageUrl = '';
 	this.description = '';
-	this.attributes = [];
+	this.attributes = {};
 	
 }

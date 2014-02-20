@@ -8,11 +8,13 @@
 
 <link rel="stylesheet" href="/css/app.structure.css" />
 <link rel="stylesheet" href="/css/app.theme.css" />
+<link rel="stylesheet" href="/css/simple-slider.css" />
 
 <script type="text/javascript" src="/js/jquery.js"></script>
 <script type="text/javascript" src="/js/app.objects.js"></script>
 <script type="text/javascript" src="/js/app.animations.js"></script>
 <script type="text/javascript" src="/js/app.preload.js"></script>
+<script type="text/javascript" src="/js/simple-slider.js"></script>
 
 </head>
 <body>
@@ -26,37 +28,42 @@
 		<select id="input_category">
 			<option value="laptops">in Laptops</option>
 			<option value="desktops">in Desktops</option>
+			<option value="tablet">in Tablet Computers</option>
 			<option value="television">in Television</option>
-			<option value="washingmachine">in Washing Machine</option>
 			<option value="refrigerator">in Refrigerator</option>
 			<option value="phone">in Mobile Phone</option>
 		</select>
 	</div>
-
-	
 </div>
 <!-- End of Navigation -->
 
 
 <div id="master"> <!-- Master Container -->
-
+<div id="toolbanner">
+	<div id="toolbanner_heading">
+		<h1>What would you like to search for?</h1>
+	</div>
+	<div id="price_range_heading" style="display: none; text-align: center;">
+		<div id="price_range_wrapper">
+			<table>
+				<tr>
+					<td>Select Budget</td>
+					<td><input id="slider-value" type="text" value="2200" data-slider="true" data-slider-range="500, 2200" data-slider-step="100" style="display: inline-block" /></td>
+					<td><span id="slider-value-display">$2200</span></td>
+				</tr>
+			</table>
+		</div>
+	</div>
+</div>
 <div id="category"> <!-- Category Page Container -->
-	<h1>What would you like to search for?</h1>
 	<div id="category_block_wrapper">
-		<!--  <div class="category_block"></div>
-		<div class="category_block"></div>
-		<div class="category_block"></div>
-		<div class="category_block"></div>
-		<div class="category_block"></div>
-		<div class="category_block"></div>-->
-		
-		
-		
 	</div>
 </div> <!-- End of Category Page Container -->
 
 <div id="search" style="display: none;"> 
-
+	<div id="product_block_wrapper">
+	
+	</div>
 </div>
 
 

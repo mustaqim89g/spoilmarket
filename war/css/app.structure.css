@@ -47,6 +47,7 @@ body {
 }
 
 #master {
+	position: relative;
 	width: 100%;
 	margin-top: 60px;
 }
@@ -55,9 +56,26 @@ body {
 	padding-top: 5px;
 }
 
-#category h1 {
+#toolbanner {
+	height: 100px;
+}
+
+#toolbanner_heading h1 {
+	padding-top: 30px;
 	font-size: 40pt;
 	margin-left: 10px;
+}
+
+#price_range_heading {
+	padding-top: 30px;
+	font-size: 20pt;
+	margin-left: 10px;
+}
+
+#price_range_wrapper {
+	width: 50%;
+	margin-left: auto;
+	margin-right: auto;
 }
 
 #category_block_wrapper {
@@ -67,6 +85,20 @@ body {
 .category_block {
 	width: 400px;
 	height: 200px;
+}
+
+.product_block {
+	width: 225px;
+	height: 300px;
+}
+
+.product_block_image {
+	margin: 0px 0px 0px 0px;
+	height: 150px;
+}
+
+.product_detail {
+	padding-left: 10px;
 }
 
 .clear {
