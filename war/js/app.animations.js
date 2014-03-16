@@ -1,17 +1,21 @@
 /**
  * 
  */
-
-function AnimationStage(stageDivName, prefix, elementWidth, elementHeight) {
+function AnimationStage(stageDivName, prefix, frameTemplateName) {
 	
 	this.displayIndex = -1;
 	this.actualIndex = -1;
+	
 	this.stageDivName = stageDivName;
 	this.stageDiv = $('#' + stageDivName);
-	this.elementWidth = elementWidth;
-	this.elementHeight = elementHeight;
+	this.elementWidth = null;
+	this.elementHeight = null;
 	this.prefix = prefix;
 	this.elementFrame = '';
+	this.frameTemplateName = frameTemplateName;
+	this.animationSpeed = 500;
+	this.isResponsive = true;
+	this.isOn = true;
 	
 	this.mapElement = function(element, frame) { return ''; }
 	this.search = function(element) { return true; } 
@@ -19,9 +23,35 @@ function AnimationStage(stageDivName, prefix, elementWidth, elementHeight) {
 	this.elements = [];
 	this.map = {};
 	
+	this.init = function() {
+		var that = this;
+		$(document).ready(function() {
+			that.prepare();
+		});
+		
+		$(window).resize(function() {
+			try {
+				if (that.isOn && that.isResponsive) {
+					that.animateFilter(that.animationSpeed);
+				}
+			}
+			catch (ex) {
+				
+			}
+		});
+	};
+	
 	this.prepare = function() {
 		this.stageDiv = $('#' + this.stageDivName);
 		this.stageDiv.css('position', 'relative');
+		this.configureFrameTemplate();
+	}
+	
+	this.configureFrameTemplate = function() {
+		var selector = $('#' + this.frameTemplateName);
+		if (selector[0] != null && typeof selector[0] != 'undefined') {
+			this.elementFrame = selector[0].innerHTML;
+		}
 	}
 	
 	this.addElement = function(element) {
@@ -38,13 +68,17 @@ function AnimationStage(stageDivName, prefix, elementWidth, elementHeight) {
 		this.map[elementName] = element;
 		
 		this.stageDiv.html(this.stageDiv.html() + html);
-		//alert(this.stageDiv.html());
 		var animationStage = this;
-		//alert(JSON.stringify($('#' + elementName)[0], null, 4));
-		//$('#' + elementName).click(function() { animationStage.internalOnElementClick(animationStage); });
-		
 		$(document).on('mouseup', '#' + elementName, function() { animationStage.internalOnElementClick(animationStage); });
 		
+	}
+	
+	this.discoverElementSize = function() {
+		try {
+			this.elementWidth = this.elementWidth || $('.' + this.prefix).width();
+			this.elementHeight = this.elementHeight || $('.' + this.prefix).height();
+		}
+		catch (ex) {}
 	}
 	
 	this.drawElement = function(element, elementName) {
@@ -64,6 +98,8 @@ function AnimationStage(stageDivName, prefix, elementWidth, elementHeight) {
 	}
 	
 	this.calculatePreliminaryPosition = function() {
+		
+		this.discoverElementSize();
 		
 		var containerWidth = this.stageDiv.width() - 20;
 		var containerHeight = this.stageDiv.height();
@@ -133,43 +169,46 @@ function AnimationStage(stageDivName, prefix, elementWidth, elementHeight) {
 	
 	this.appear = function() {
 		
-		this.calculatePreliminaryPosition();
-		for (var i = 0; i < this.elements.length; i++) {
-			var element = this.elements[i];
-			var elementName = this.getElementName(element);
-			
-			$('#' + elementName).css('top', element.stageY + 'px');
-			$('#' + elementName).css('left', element.stageX + 'px');
-			$('#' + elementName).show();
+		if (this.isOn) {
+			this.calculatePreliminaryPosition();
+			for (var i = 0; i < this.elements.length; i++) {
+				var element = this.elements[i];
+				var elementName = this.getElementName(element);
+				
+				$('#' + elementName).css('top', element.stageY + 'px');
+				$('#' + elementName).css('left', element.stageX + 'px');
+				$('#' + elementName).show();
+			}
 		}
-		
 	}
 	
 	this.animateEntrance = function(speed, onComplete) {
 		
-		onComplete = onComplete || function() {};
-		
-		this.centerAllElements(true);
-		this.calculatePreliminaryPosition();
-		
-		setTimeout(onComplete, speed);
-		
-		for (var i = 0; i < this.elements.length; i++) {
-			var element = this.elements[i];
-			var elementName = this.getElementName(element);
-			var opacityValue = element.elementIsVisible ? 1.0 : 0.0;
+		if (this.isOn) {
+			speed = speed || this.animationSpeed;
+			onComplete = onComplete || function() {};
 			
-			$('#' + elementName).css('opacity', 0.0);
-			$('#' + elementName).show();
+			this.centerAllElements(true);
+			this.calculatePreliminaryPosition();
 			
-			$('#' + elementName).animate({
-				top: element.stageY + 'px',
-				left: element.stageX + 'px',
-				opacity: opacityValue
-			}, speed, function() {});
+			setTimeout(onComplete, speed / 4);
 			
+			for (var i = 0; i < this.elements.length; i++) {
+				var element = this.elements[i];
+				var elementName = this.getElementName(element);
+				var opacityValue = element.elementIsVisible ? 1.0 : 0.0;
+				
+				$('#' + elementName).css('opacity', 0.0);
+				$('#' + elementName).show();
+				
+				$('#' + elementName).animate({
+					top: element.stageY + 'px',
+					left: element.stageX + 'px',
+					opacity: opacityValue
+				}, speed, function() {});
+				
+			}
 		}
-		
 	}
 	
 	this.filter = function() {
@@ -182,31 +221,34 @@ function AnimationStage(stageDivName, prefix, elementWidth, elementHeight) {
 	this.animateFilter = function(speed) {
 		try
 		{
-			this.filter();
-			this.calculatePreliminaryPosition();
-			
-			for (var i = 0; i < this.elements.length; i++) {
-				var element = this.elements[i];
-				var elementName = this.getElementName(element);
-	
-				if (element.elementIsVisible) {
-					$('#' + elementName).show();
-					$('#' + elementName).stop(true, true);
-					$('#' + elementName).animate({
-						top: element.stageY + 'px',
-						left: element.stageX + 'px',
-						opacity: 1.0
-					}, speed, function() {});
-				}
-				else {
-					$('#' + elementName).stop(true, true);
-					$('#' + elementName).animate({
-						opacity: 0.0
-					}, speed, function() { 
-						//$('#' + elementName).hide(); 
-					});
-				}
+			if (this.isOn) {
+				speed = speed || this.animationSpeed;
+				this.filter();
+				this.calculatePreliminaryPosition();
 				
+				for (var i = 0; i < this.elements.length; i++) {
+					var element = this.elements[i];
+					var elementName = this.getElementName(element);
+		
+					if (element.elementIsVisible) {
+						$('#' + elementName).show();
+						$('#' + elementName).stop(true, true);
+						$('#' + elementName).animate({
+							top: element.stageY + 'px',
+							left: element.stageX + 'px',
+							opacity: 1.0
+						}, speed, function() {});
+					}
+					else {
+						$('#' + elementName).stop(true, true);
+						$('#' + elementName).animate({
+							opacity: 0.0
+						}, speed, function() { 
+							//$('#' + elementName).hide(); 
+						});
+					}
+					
+				}
 			}
 		}
 		catch (eee) {alert(eee);}
@@ -254,23 +296,26 @@ function AnimationStage(stageDivName, prefix, elementWidth, elementHeight) {
 	
 	this.animateExit = function(speed, onComplete) {
 		
-		onComplete = onComplete || function() {};
-		this.calculateDisplacement();
-		setTimeout(onComplete, speed);
-		
-		for (var i = 0; i < this.elements.length; i++) {
-			var element = this.elements[i];
-			var elementName = this.getElementName(element);
-			var index = element.actualIndex;
+		if (this.isOn) {
+			speed = speed || this.animationSpeed;
+			onComplete = onComplete || function() {};
 			
-			$('#' + elementName).animate({
-				top: element.stageY + 'px',
-				left: element.stageX + 'px',
-				opacity: 0.0
-			}, speed, function() {			
-				$(this).hide();
-			});
+			this.calculateDisplacement();
+			setTimeout(onComplete, speed / 4);
 			
+			for (var i = 0; i < this.elements.length; i++) {
+				var element = this.elements[i];
+				var elementName = this.getElementName(element);
+				var index = element.actualIndex;
+				
+				$('#' + elementName).animate({
+					top: element.stageY + 'px',
+					left: element.stageX + 'px',
+					opacity: 0.0
+				}, speed, function() {			
+					$(this).hide();
+				});
+			}
 		}
 	}
 	
@@ -278,8 +323,13 @@ function AnimationStage(stageDivName, prefix, elementWidth, elementHeight) {
 		animationStage.onElementClick(animationStage);
 	}
 	
-	this.onElementClick = function(animationStage) {
+	this.isOnElementClick = function(animationStage) {
 		
 	}
 	
+	this.off = function() { this.isOn = false; }
+	this.on = function() { this.isOn = true; }
+	
+	
+	this.init();
 }

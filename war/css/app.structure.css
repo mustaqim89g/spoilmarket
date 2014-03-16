@@ -52,7 +52,7 @@ body {
 	margin-top: 60px;
 }
 
-#category {
+#stage {
 	padding-top: 5px;
 }
 
@@ -78,8 +78,8 @@ body {
 	margin-right: auto;
 }
 
-#category_block_wrapper {
-	text-align: center;
+#stage_block_wrapper {
+	
 }
 
 .category_block {
@@ -88,7 +88,7 @@ body {
 }
 
 .product_block {
-	width: 350px;
+	width: 250px;
 	height: 300px;
 }
 

@@ -1,77 +1,255 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0" />
-<meta name="viewport" content="width=device-width" />
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>SpoilMarket.com</title>
 
-<title>SpoiltMarket.com</title>
+<script src="js/jquery.js" type="text/javascript"></script>
+<script src="js/parallax.js" type="text/javascript"></script>
+<script src="js/app.grid.js" type="text/javascript"></script>
+<script src="js/app.wrap.js" type="text/javascript"></script>
+<script src="js/app.table.js" type="text/javascript"></script>
 
-<link rel="stylesheet" href="/css/app.structure.css" />
-<link rel="stylesheet" href="/css/app.theme.css" />
-<link rel="stylesheet" href="/css/simple-slider.css" />
+<script src="js/app.load.js" type="text/javascript"></script>
+<script src="js/app.populate.js" type="text/javascript"></script>
 
-<script type="text/javascript" src="/js/jquery.js"></script>
-<script type="text/javascript" src="/js/app.objects.js"></script>
-<script type="text/javascript" src="/js/app.animations.js"></script>
-<script type="text/javascript" src="/js/app.preload.js"></script>
-<script type="text/javascript" src="/js/simple-slider.js"></script>
 
+<link rel="stylesheet" href="css/main.css" type="text/css" />
 </head>
-<body>
 
-<!-- Navigation -->
-<div id="navigation_bar">
-	<div class="left"><a id="nav-home" href="#">SpoiltMarket</a></div>
-	<div class="right"></div> 
-	<div class="center">
-		<input id="input_search" type="text"/>
-		<select id="input_category">
-			<option value="laptops">in Laptops</option>
-			<option value="desktops">in Desktops</option>
-			<option value="tablet">in Tablet Computers</option>
-			<option value="television">in Television</option>
-			<option value="refrigerator">in Refrigerator</option>
-			<option value="phone">in Mobile Phone</option>
-		</select>
+<body>
+<div class="wrapper" data-wrap="nav">
+<div id="nav">
+	<div id="nav-logo">
+		<img src="assets/logo.png" />
+	</div>
+	<div id="nav-login">
+		<div id="login"> 
+			<div id="login-image" class="login-btn left" style="background-image: url(assets/key.png); background-repeat: no-repeat; background-size: contain; width: 50px; height: 50px"></div>
+			<div id="login-text" class="login-btn left">Login</div>
+		</div>
+		<div id="my-bookmark-btn" style="display: none">My Bookmark</div>
+		<div id="login-info" style="display: none;"></div>
+	</div>
+	<div id="nav-search">
+		<table>
+			<tr>
+				<td style="width: 200px"><span id="span-search-instruction">Search for a Product</span></td>
+				<td style="width: 400px">
+					<input id="inp-search" type="text" style="width: 48%" />
+					<select id="inp-search-in" style="width: 48%">
+						<option>Laptops</option>
+						<option>Desktops</option>
+						<option>Mobile Phone</option>
+						<option>Television</option>
+						<option>Tablet Computers</option>
+						<option>Refrigerator</option>
+					</select>
+				</td>
+				<td style="width: 100px">
+					<button id="inp-search-submit">
+						Search
+					</button>
+				</td>
+			</tr>
+		</table>
+	</div>	
+</div>
+</div>
+
+<div id="stage-wrapper">
+<div class="wrapper" data-wrap="heading_grid0"><div id="stage-heading"></div></div>
+<div><div id="stage"></div></div>
+</div>
+
+<div id="budgetSelector" style="display: none">
+<div id="budgetSelector-price">$2500</div>
+<div class="budgetSelector-instruction">Select your maximum budget</div>
+<div class="drag-canvas">
+	
+</div>
+</div>
+
+
+<div id="login-background" style="display: none;">
+	<div id="login-box">
+		<div class="close"></div>
+		<div class="heading-bar" style="height: 50px;">
+			<div class="left" style="margin-left: 20px; background-image: url(assets/key.png); background-repeat: no-repeat; background-size: contain; width: 50px; height: 50px; background-color: #fff;"></div>
+			<div class="left" style="margin: 15px; color: #fff;">Login</div>
+		</div>
+		<div style="padding: 15px;">
+		<div style="margin-top: 20px;">Enter your credentials below to log in</div>
+		<div style="margin-top: 10px;">User Name</div>
+		<div><input type="text" id="txtusername" style="width: 80%;" /></div>
+		<div style="margin-top: 10px;">Password</div>
+		<div><input type="password" id="txtpassword" style="width: 80%;" /></div>
+		<div style="margin-top: 10px;"><button id="btnlogin">Login</button>&nbsp;<button id="cancelLogin">Cancel</button></div>
+		</div>
 	</div>
 </div>
-<!-- End of Navigation -->
 
+<div id="product-info-background" style="display: none;">
+	<div id="product-info">
+		<div class="close"></div>
+		<div class="product_info_detail">
+			<div id="product-info-left" class="left" style="width: 49%;">
+				<div id="product-info-image"></div>
+				<div class="clear"></div>
+				<!-- Block for product information -->
+				<div class="product_info_main">
+					<div class="left">
+						<div id="product-info-brand">$$$BRAND$$$</div>
+						<div id="product-info-model">$$$MODEL$$$</div>
+						<div id="product-info-rating" class="product_info_rating">$$$RATING$$$</div>
+					</div>
+					<div class="right" style="text-align: right">
+						<div>Lowest Price of</div>
+						<div id="product-info-price" class='product_info_price product_info_price_big'>$###PRICE###</div>
+						<div id="product-info-price-at" class="product_store_lowest">at $$$MINPRICESTORE$$$</div>
+						<div>
+							<button id="product-info-add-notebook" class="product_info_addtonotebook" data-id="$$$ID$$$">Compare this Product</button>
+							<button id="product-info-add-bookmark" class="product_info_bookmark" data-id="$$$ID$$$">Bookmark</button>
+						</div>
+					</div>
+				</div>
+				<div class="acc" data-default="on">
+					<div class="acc-title">Product Description</div>
+					<div id="product-info-description" class="acc-content">$$$PRODUCTDESC$$$</div>
+				</div>
+			</div>
+			<div id="product-info-right" class="left" style="width: 49%; margin-left: 30px;">
+				<div class="product_info_more">
+				<!-- Block for Product Description -->
+					<div style="margin-bottom: 10px;">
+						<div class="tab_fill" style="width: 2%;"></div>
+						<div id="tab-stores" class="tab_active" style="width: 20%">Stores &amp; Prices</div>
+						<div class="tab_fill" style="width: 1%;"></div>
+						<div id="tab-specs" class="tab" style="width: 20%">Specifications</div>
+						<div class="tab_fill" style="width: 1%;"></div>
+						<div id="tab-reviews" class="tab" style="width: 20%">Reviews</div>
+						<div class="tab_fill" style="width: 34%;"></div>
+						<div class="clear"></div>
+					</div>
 
-<div id="master"> <!-- Master Container -->
-<div id="toolbanner">
-	<div id="toolbanner_heading">
-		<h1>What would you like to search for?</h1>
+					<!-- Block for Specification -->
+					<div id="product-info-spec-block" style="display: none"><div id="product-info-specifications"></div></div>
+
+					<div id="product-info-stores-block" ><div id="product-info-stores"></div></div>
+				
+					<div id="product-info-review-block" style="display: none">
+					<div id="product_reviews_add_$$$ID$$$" class="product_review_box">
+						<div>Write your Review Here</div>
+						<div>
+							<input type="text" style="width: 80%" class="product-review-textbox" data-writeto="$$$ID$$$"/>
+						</div>
+					</div>
+					<div id="product-info-reviews"></div>
+					</div>
+				
+				</div>
+			
+			</div>
+		</div>
 	</div>
-	<div id="price_range_heading" style="display: none; text-align: center;">
-		<div id="price_range_wrapper">
-			<table>
+	
+</div>
+
+<div id="comparator-background" style="display: none;">
+	<div id="comparator-temporary"></div>
+</div>
+
+<div id="comparator-stage-background" style="display: none;">
+	<div id="comparator-stage">
+		<div id="comparer"></div>
+	</div>
+	<div class="close"></div>
+</div>
+
+
+<!--
+<div id="comparator">
+	<div id="comparator-notebook-icon" data-open="0" style="width: 10%; height: 100%; float: left; background-image: url(assets/notebook.png); background-repeat: no-repeat; background-size: 20%; background-position-y: center; background-position-x: 20px;">
+	</div>
+	<div style="width: 85%; height: 100%; float: left;">
+		<div class="title" style="height: 20%; width: 100%">Comparison Notebook</div>
+		<div id="comparator-content" style="height: 65%; width: 100%">Your notebook is empty right now.</div>
+		<div style="height: 10%; text-align: right"><button id="compare-products" disabled="true">Compare Products</button></div>
+	</div>
+</div>
+-->
+
+<div id="templates">
+<!-- Template for Headings -->
+	<div id="notebook">
+		<div id="notebook-icon" style="background-image: url(assets/notebook.png);"></div>
+	</div>
+
+	<div id="heading-template">
+		<div class="stage-heading-wrapper">
+			<div class="stage-heading-element">
+				<div class="stage-heading-title">$$$TITLE$$$</div>
+				<div class="stage-heading-instruction">$$$INSTRUCTION$$$</div>
+			</div>
+			<div class="stage-heading-control">
+				$$$CONTROLS$$$
+			</div>
+		</div>
+	</div>
+
+<!-- Template for Categories -->
+	<div id="category-template">
+		<div class="category_block" style="background-image: url($$$URL$$$); background-size: cover;"></div>
+	</div>
+
+<!-- Template for Products / Product Info -->
+	<div id="product-template">
+		<div class="product_block">
+			<div id='product_block_image_$$$ID$$$' class="product_block_image product_$$$ID$$$" style="position: relative; background-image: url($$$URL$$$);">
+				<div class="product_block_rating">$$$RATING$$$</div>
+			</div>
+			<div class="product_detail">
+				<div class="product_detail_brand">$$$BRAND$$$</div>
+				<div>$$$MODEL$$$</div>
+				<div style="height: 10px"></div>
+				<div>From</div>
+				<div class='product_info_price product_info_price_thumbnail'>$###PRICE###</div>
+			</div>
+		</div>
+	</div>
+	
+<!-- Template for Product Specification -->
+	<div id="product-spec-template">
+		<div>
+			<table style="width: 100%">
 				<tr>
-					<td>Select Budget</td>
-					<td><input id="slider-value" type="text" value="2200" data-slider="true" data-slider-range="500, 2200" data-slider-step="100" style="display: inline-block" /></td>
-					<td><span id="slider-value-display">$2200</span></td>
+					<td class="product_info_spec">$$$SPEC$$$</td>
+					<td class="product_info_value">$$$VALUE$$$</td>
 				</tr>
 			</table>
 		</div>
 	</div>
-</div>
-<div id="category"> <!-- Category Page Container -->
-	<div id="category_block_wrapper">
-	</div>
-</div> <!-- End of Category Page Container -->
-
-<div id="search" style="display: none;"> 
-	<div id="product_block_wrapper">
 	
+	
+<!-- Template for Store List -->
+	
+
+<!-- Template for Comparator List -->
+
+<!-- Template for No Result -->
+	<div id="product-no-result-template">
+		<div id="product-no-result">
+			<div id="product-no-result-logo" style="background-image: url(assets/logo.png);">
+			</div>
+			<div id="product-no-result-message" style="text-align: center">
+				Your product search yield no result. Click Start Over below to Search for something else. <br/>
+				<br/>
+				<button id="btn-restart-search">Start Over</button>
+			</div>
+		</div>
 	</div>
-</div>
-
-
-</div> <!-- End of Master Container -->
-
-<!-- Floating Overlays -->
-<div id="comparing_basket" style="display: none">
 
 </div>
 
