@@ -39,7 +39,7 @@ function Grid(name, containerId, templateId, hCentralize, vCentralize)
 		this.containerId = '#' + this.containerId; //(this.containerId.subString(0, 1) == '#' ? '' : '#') + this.containerId;
 		//alert(this.templateId);
 		
-		this.container().css('position', 'relative');
+		/*this.container().css('position', 'relative');*/
 		
 		this.clear();
 		this.discover();
@@ -132,6 +132,7 @@ function Grid(name, containerId, templateId, hCentralize, vCentralize)
 	/* Clear all elements */
 	this.clear = function()
 	{
+		this.container().html('');
 		this.elements = {};
 		this.elements.list = [];
 		var theElements = this.elements;
@@ -238,19 +239,22 @@ function Grid(name, containerId, templateId, hCentralize, vCentralize)
 	this.drawElement = function(element)
 	{
 		var html = this.bind(element);
+		var elementOtherClasses = element.otherClasses || '';
 		
 		if (this.elementClickable)
 		{
 			html += '<div id="' + element.id + '_clickable" class="clickable" data-click="' + element.id + '">&nbsp;</div>';
 		}
 		
-		html = '<div id="' + element.id + '" class="' + this.name + ' ' + this.otherClasses + '" style="display: none; position: absolute; opacity: 0.0;">' + html + '</div>';
+		html = '<div id="' + element.id + '" class="' + this.name + ' ' + this.otherClasses + ' ' + elementOtherClasses + '" style="display: none;">' + html + '</div>';
 			
 		var c = this.container();
 		c.html(c.html() + html);
 		
 		var currentGrid = this;
-		$(document).on('mouseup', '#' + element.id + '_clickable', function() { currentGrid.____click(currentGrid, this); });
+		//$('#' + element.id + '_clickable').unbind('click');
+		//$('#' + element.id + '_clickable').click(function() { currentGrid.____click(currentGrid, this); });
+		$(document).off('click', '#' + element.id + '_clickable').on('click', '#' + element.id + '_clickable', function() {currentGrid.____click(currentGrid, this); });
 		//alert(c.html());
 	}
 	
@@ -366,7 +370,7 @@ function Grid(name, containerId, templateId, hCentralize, vCentralize)
 	/* Aligns the elements on the container, logically. */
 	this.alignElements = function()
 	{
-		this.hSpacing = this.hSpacing || 20;
+		/*this.hSpacing = this.hSpacing || 20;
 		this.vSpacing = this.vSpacing || 20;
 		this.minimumMargin = this.minimumMargin || 20;
 	
@@ -429,7 +433,7 @@ function Grid(name, containerId, templateId, hCentralize, vCentralize)
 			element.y = topOffset + (eRow * actualElementHeight) - this.vSpacing;
 			
 			//alert(element.x + ", " + element.y);
-		}
+		}*/
 	}
 	
 	/* The sort function for the elements. Should be overridden given the circumstances. */
@@ -496,7 +500,7 @@ function Grid(name, containerId, templateId, hCentralize, vCentralize)
 	
 	this.defineEntryPosition = function()
 	{
-		this.alignElements();
+		/*this.alignElements();
 		var hCenter = Math.floor(this.width() / 2);
 		var vCenter = Math.floor(this.height() / 2);
 
@@ -520,12 +524,12 @@ function Grid(name, containerId, templateId, hCentralize, vCentralize)
 			{
 				this.out('element[' + i + '] in '  + this.name + ' could not be found.');
 			}
-		}
+		}*/
 	}
 	
 	this.defineExitPosition = function()
 	{
-		var hCenter = Math.floor(this.width() / 2);
+		/*var hCenter = Math.floor(this.width() / 2);
 		var vCenter = Math.floor(this.height() / 2);
 
 		for (var i = 0; i < this.elements.list.length; i++)
@@ -535,7 +539,7 @@ function Grid(name, containerId, templateId, hCentralize, vCentralize)
 			element.x = this.displace(element.x, $('.' + this.name).width(), hCenter);
 			element.y = this.displace(element.y, $('.' + this.name).height(), vCenter);
 		
-		}
+		}*/
 	}
 	
 	this.refresh = function()
@@ -550,7 +554,16 @@ function Grid(name, containerId, templateId, hCentralize, vCentralize)
 	
 	this.animate = function(dom, element, opacity, speed, completeFunction)
 	{
-		var rand = Math.floor(Math.random() * 100) + 100;
+		if (element.visible)
+		{
+			dom.show();
+		}
+		else
+		{
+			dom.hide();
+		}
+		
+		/*var rand = Math.floor(Math.random() * 100) + 100;
 		//alert(rand);
 		var y = element.visible ? element.y : 0 - dom.height();
 		var x = element.visible ? element.x : 0 - dom.width();
@@ -576,7 +589,7 @@ function Grid(name, containerId, templateId, hCentralize, vCentralize)
 		{
 			element.supplementaryAnimation();
 			element.supplementaryAnimation = null;
-		}
+		}*/
 		
 	}
 	
@@ -597,11 +610,6 @@ function Grid(name, containerId, templateId, hCentralize, vCentralize)
 			else
 			{
 				var dom = $('#' + element.id);
-				if (this.name == 'product_spec')
-				{
-					alert(JSON.stringify(dom));
-				}
-				
 				if (dom[0])
 				{
 					this.animate(dom, element, opacity, speed, completeFunction);
@@ -653,9 +661,11 @@ function Grid(name, containerId, templateId, hCentralize, vCentralize)
 	this.move = function(speed, completeFunction)
 	{
 		speed = speed || 500;
-	
+		this.container().html('');
 		this.refresh();
-		this.alignElements();
+		this.drawElements();
+		
+		//this.alignElements();
 		this.callAnimate(1.0, speed, completeFunction);
 		this.showOrHideEmptyResult();
 	}

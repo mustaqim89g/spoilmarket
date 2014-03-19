@@ -14,8 +14,9 @@ body
 
 body, input, select, button
 {
-	font-family: 'Gill Sans', 'Trebuchet MS', 'Century Gothic', Tahoma, sans-serif;
+	font-family: 'Open Sans', 'Gill Sans', 'Trebuchet MS', 'Century Gothic', Tahoma, sans-serif;
 	font-size: 12pt;
+	font-weight: 300;
 }
 
 .left
@@ -83,6 +84,59 @@ body, input, select, button
 {
 	float: right;
 	width: 200px;
+	margin-right: 200px;
+}
+
+.vote-number
+{
+	width: 100%;
+	text-align: center;
+	font-size: 24pt;
+	color: #c0392b;
+}
+
+.up-vote
+{
+	width: 50%; height: 30px; background-image: url(../assets/up.png); background-size: contain; background-repeat: no-repeat;
+	background-position: center;
+		cursor: pointer;
+	margin: auto;
+}
+
+.down-vote
+{
+	width: 50%; height: 30px; background-image: url(../assets/down.png); background-size: contain; background-repeat: no-repeat;
+	background-position: center;
+		cursor: pointer;
+	margin: auto;
+}
+
+.tip
+{
+	margin-left: 20px;
+	float: left;
+	background-image: url(../assets/tip.png);
+	background-size: contain;
+	background-repeat: no-repeat;
+	width: 25px;
+	height: 25px;
+}
+
+.tip .tip-content
+{
+	display: none;
+	width: 300px;
+	
+	position: relative;
+	background-color: #fff;
+	border: 2px solid #2c3e50;
+	
+	padding: 10px;
+}
+
+.tip:hover .tip-content
+{
+	display: block;
 }
 
 #stage-wrapper
@@ -218,10 +272,31 @@ body, input, select, button
 	-moz-box-shadow: 0px 0px 8px 3px rgba(50, 50, 50, 0.75);
 	box-shadow: 0px 0px 8px 3px rgba(50, 50, 50, 0.75);
 	
+	float: left;
+	
 	width: 270px;
 	height: 320px;
 	
 	overflow: hidden;
+	border: 1px solid #333;
+	background-color: #fff;
+	
+	margin-left: 30px;
+	margin-top: 20px;
+	cursor: pointer;
+	
+	position: relative;
+}
+
+.product .clickable
+{
+	height: 180px;
+}
+
+.product.selected
+{
+	opacity: 0.3;
+	border: 1px solid #c0392b;
 }
 
 .product_block_image
@@ -442,17 +517,17 @@ body, input, select, button
 
 #product-info
 {
-	position: fixed;
+	/*position: fixed;
 	top: 50px;
 	left: 50px;
 	right: 50px;
-	bottom: 50px;
+	bottom: 50px;*/
 	
 	background-color: #fff;
-	z-index: 21;
+	/*z-index: 21;*/
 	
-	overflow-x: hidden;
-	overflow-y: scroll;
+	/*overflow-x: hidden;
+	overflow-y: scroll;*/
 }
 
 #product-info-image
@@ -673,6 +748,28 @@ body, input, select, button
 	background-size: contain !important;
 }
 
+.comparator-deleter
+{
+	background-image: url(../assets/remove.png);
+	background-repeat: no-repeat;
+	background-size: contain;
+	
+	width: 20px;
+	height: 20px;
+	cursor: pointer;
+}
+
+.comparator-deleter:hover
+{
+	background-image: url(../assets/remove-hover.png);
+	background-repeat: no-repeat;
+	background-size: contain;
+	
+	width: 20px;
+	height: 20px;
+	cursor: pointer;
+}
+
 #comparator-notebook-icon
 {
 	cursor: pointer;
@@ -703,4 +800,352 @@ body, input, select, button
 	-webkit-box-shadow: 0px 0px 8px 3px rgba(50, 50, 50, 0.75);
 	-moz-box-shadow: 0px 0px 8px 3px rgba(50, 50, 50, 0.75);
 	box-shadow: 0px 0px 8px 3px rgba(50, 50, 50, 0.75);*/
+}
+
+/* entire container, keeps perspective */
+.flip-container {
+	perspective: 1000;
+	transform-style: preserve-3d;
+	
+	-webkit-perspective: 1000;
+	-webkit-transform-style: preserve-3d;
+
+	-moz-perspective: 1000;
+	-moz-transform-style: preserve-3d;
+	
+}
+
+/*  UPDATED! flip the pane when hovered */
+.flip-container:hover .back {
+	transform: rotateY(0deg);
+	-webkit-transform: rotateY(0deg);
+	-moz-transform: rotateY(0deg);
+}
+.flip-container:hover .front {
+    transform: rotateY(180deg);
+    -webkit-transform: rotateY(180deg);
+    -moz-transform: rotateY(180deg);
+}
+
+.flip-container, .front, .back {
+	width: 270px;
+	height: 320px;
+}
+
+/* flip speed goes here */
+.flipper {
+	transition: 0.6s;
+	transform-style: preserve-3d;
+
+	-webkit-transition: 0.6s;
+	-webkit-transform-style: preserve-3d;
+	
+	-moz-transition: 0.6s;
+	-moz-transform-style: preserve-3d;
+
+	position: relative;
+}
+
+/* hide back of pane during swap */
+.front, .back {
+	backface-visibility: hidden;
+	transition: 0.6s;
+	transform-style: preserve-3d;
+
+	-webkit-backface-visibility: hidden;
+	-webkit-transition: 0.6s;
+	-webkit-transform-style: preserve-3d;
+	
+	-moz-backface-visibility: hidden;
+	-moz-transition: 0.6s;
+	-moz-transform-style: preserve-3d;
+
+
+	position: absolute;
+	top: 0;
+	left: 0;
+}
+
+/*  UPDATED! front pane, placed above back */
+.front {
+	z-index: 2;
+	transform: rotateY(0deg);
+	-webkit-transform: rotateY(0deg);
+	-moz-transform: rotateY(0deg);
+}
+
+/* back, initially hidden pane */
+.back {
+	transform: rotateY(-180deg);
+	-webkit-transform: rotateY(-180deg);
+	-moz-transform: rotateY(-180deg);
+}
+
+/***************************************************************/
+/***************************************************************/
+/***************************************************************/
+/* THE CSS FOR THE STAGES                                      */
+/***************************************************************/
+/***************************************************************/
+.document-flip-container
+{
+	perspective: 1000;
+	-webkit-perspective: 1000;
+	-moz-perspective: 1000;
+	
+	transform-style: preserve-3d;
+	-webkit-transform-style: preserve-3d;
+	-moz-transform-style: preserve-3d;
+}
+
+.flippable
+{
+	transition: 0.6s;
+	transform-style: preserve-3d;
+
+	-webkit-transition: 0.6s;
+	-webkit-transform-style: preserve-3d;
+	
+	-moz-transition: 0.6s;
+	-moz-transform-style: preserve-3d;	
+
+	position: relative;
+}
+
+._stage_
+{
+	
+	z-index: 1;
+	background-color: #fff;
+	
+	transform: rotateY(-180deg);
+	backface-visibility: hidden;
+	transition: 0.6s;
+	transform-style: preserve-3d;
+
+	-webkit-transform: rotateY(-180deg);
+	-webkit-backface-visibility: hidden;
+	-webkit-transition: 0.6s;
+	-webkit-transform-style: preserve-3d;
+	
+	-moz-transform: rotateY(-180deg);
+	-moz-backface-visibility: hidden;
+	-moz-transition: 0.6s;
+	-moz-transform-style: preserve-3d;
+
+	position: absolute;
+	top: 0;
+	left: 0;
+}
+
+._stage_.face
+{
+	z-index: 2;
+	transform: rotateY(0deg);
+	-webkit-transform: rotateY(0deg);
+	-moz-transform: rotateY(0deg);
+}
+
+
+/************** New CSS *******************/
+.page-instruction
+{
+	width:25%;
+	float: left;
+	
+	color: #777;
+	overflow: hidden;
+}
+
+.page-instruction-inner
+{
+	padding: 10px;
+}
+
+.the-title
+{
+	font-size: 40pt;
+	color: #2c3e50;	
+}
+
+.the-info
+{
+	margin-top: 10px;
+	font-size: 20pt;
+	color: #777;
+}
+
+
+#category-stage
+{
+	width: 100%;
+}
+
+#categories
+{
+	margin-left: 26%;
+	/*float: left;	*/
+}
+
+.category
+{
+	width: 400px;
+	margin-right: 10px;
+	margin-bottom: 10px;
+	height: 200px;
+	background-color: #fff;
+	border: 1px solid #333;
+	
+	float: left;
+	cursor: pointer;
+	
+	background-size: cover;
+	background-repeat: no-repeat;
+	background-position: center;
+	overflow: hidden;
+}
+
+.category-text
+{
+	z-index: 2;
+	font-size: 40pt;
+	
+	width: 100%;
+	height: 200px;
+	opacity: 0.7;
+	
+	text-align: center;
+	vertical-align: middle;
+	
+	color: #333;
+	padding: 20px;
+}
+
+.category-text:hover
+{
+	background-color: #333;
+	color: #fff;
+}
+
+#product-stage
+{
+	width: 100%;
+}
+
+#product-infomation-stage
+{
+	width: 100%;
+}
+
+#stores-stage
+{
+	width: 100%;
+}
+
+.toolbar
+{
+	background-color: #eee;
+	border-bottom: 1px solid #333;
+	width: 100%;
+	height: 50px;
+	padding: 5px;
+	
+	margin: 0px 0px 0px 0px;
+}
+
+.toolbar-items li
+{
+	float: left;
+	display: block;
+}
+
+.toolbar-items li button
+{
+	cursor: pointer;
+}
+
+.toolbar-items .space
+{
+	height: 40px;
+	width: 20px;
+	text-align: center;
+	vertical-align: middle;
+}
+
+.toolbar-items .text
+{
+	height: 35px;
+	text-align: center;
+	padding-top: 5px;
+}
+
+.comparator-number
+{
+	color: #fff;
+	background-color: #c0392b;
+	padding: 2px 8px 2px 8px;
+}
+
+.user-name
+{
+	color: #fff;
+	background-color: #c0392b;
+	padding: 2px 8px 2px 8px;
+	margin-right: 10px;
+}
+
+
+.product_review_box_cannot
+{
+	border: 2px solid #c0392b;
+	padding: 20px;
+	text-align: center;
+	color: #c0392b;
+}
+
+.pad10
+{
+	padding: 10px;
+}
+
+.pad50
+{
+	padding: 50px;
+}
+
+#map-sidebar
+{
+	width: 24%;
+	padding: 1%;
+	float: left;
+}
+
+#map-wrapper
+{
+	float: left;
+	padding: 1%;
+	width: 70%;
+	
+	height: 500px;
+}
+
+#map
+{
+	width: 100%;
+	height: 600px;
+	border: 2px solid #c0392b;
+}
+
+#map-product-image
+{
+	background-size: contain;
+	background-repeat: no-repeat;
+	background-position: center;
+	width: 100%;
+	height: 200px;
+}
+
+#map-product-brand
+{
+	font-weight: bold;
 }

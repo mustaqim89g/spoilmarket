@@ -11,6 +11,7 @@ function Table (canvasId, className, style, alternateStyle, headingStyle)
 	this.alternateStyle = alternateStyle || '';
 	this.headingStyle = headingStyle || '';
 	this.minimumWidth = 500;
+	this.showHeading = true;
 	
 	this.columnId = 0;
 	
@@ -160,18 +161,21 @@ function Table (canvasId, className, style, alternateStyle, headingStyle)
 			//alert(JSON.stringify(c));
 			c.html('');
 			
-			var html = '<table style="width: 100%"><tr>';
+			var html = '<table style="width: 100%; border-collapse: collapse;">';
 			var cWidth = c.width();
 			
-			for (var i = 0; i < this.columns.length; i++)
+			if (this.showHeading)
 			{
-				var column = this.columns[i];
-				html += '<td class="' + this.headingStyle + ' ' + this.className + '_column_' + i + ' ' + this.className + '_column" data-column="' + i + '">' + 
-					this.columns[i].name + '</td>';
+				html += '<tr>';
+				for (var i = 0; i < this.columns.length; i++)
+				{
+					var column = this.columns[i];
+					html += '<td class="' + this.headingStyle + ' ' + this.className + '_column_' + i + ' ' + this.className + '_column" data-column="' + i + '">' + 
+						this.columns[i].name + '</td>';
+				}
+				
+				html += '</tr>'
 			}
-			
-			html += '</tr>'
-			
 			for (var i = 0; i < this.rows.length; i++)
 			{
 				var row = this.rows[i];

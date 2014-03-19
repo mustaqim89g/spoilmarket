@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport' />
+  <!-- <meta name="viewport" content="width=device-width" /> -->
+  <title>SpoilMarket.com</title>
+
+<link href='http://fonts.googleapis.com/css?family=Open+Sans:400,300,700,600' rel='stylesheet' type='text/css'>
+<link rel="stylesheet" href="css/main.css" type="text/css" />
+<link rel="stylesheet" href="css/leaflet.css" type="text/css" />
+<link rel="stylesheet" href="css/mapbox.css" type="text/css" />
+
+<script src="js/jquery.js" type="text/javascript"></script>
+<script src="js/leaflet-src.js" type="text/javascript"></script>
+<script src="js/mapbox.js" type="text/javascript"></script>
+<script src="js/app.global.js" type="text/javascript"></script>
+<script src="js/app.wrap.js" type="text/javascript"></script>
+<script src="js/app.grid.js" type="text/javascript"></script>
+<script src="js/app.table.js" type="text/javascript"></script>
+<script src="js/app.functions.js" type="text/javascript"></script>
+<script src="js/app.products.js" type="text/javascript"></script>
+<script src="js/app.map.js" type="text/javascript"></script>
+<script src="js/app.events.js" type="text/javascript"></script>
+
+
+
+<!-- <script src="js/parallax.js" type="text/javascript"></script>
+<script src="js/app.grid.js" type="text/javascript"></script>
+<script src="js/app.wrap.js" type="text/javascript"></script>
+<script src="js/app.table.js" type="text/javascript"></script>
+
+<script src="js/app.load.js" type="text/javascript"></script>
+<script src="js/app.populate.js" type="text/javascript"></script>
+ -->
+
+</head>
+
+<body>
+<div class="wrapper" data-wrap="nav">
+<div id="nav">
+	<div id="nav-logo">
+		<img src="assets/logo.png" />
+	</div>
+	<div id="nav-login" style="padding-top: 15px;">
+		<div id="whenLoggedOut"><button id="btnSignIn">Sign In</button></div>
+		<div id="whenLoggedIn" style="display: none"><button id="btnSignOut">Sign Out</button></div>
+	</div>
+	<div id="nav-search">
+		<table>
+			<tr>
+				<td style="width: 200px"><span id="span-search-instruction">Search for a Product</span></td>
+				<td style="width: 400px">
+					<input id="inp-search" type="text" style="width: 48%" />
+					<select id="inp-search-in" style="width: 48%">
+						<option>Laptops</option>
+						<option>Desktops</option>
+						<option>Mobile Phone</option>
+						<option>Television</option>
+						<option>Tablet Computers</option>
+						<option>Refrigerator</option>
+					</select>
+				</td>
+				<td style="width: 200px">
+					<button id="inp-search-submit">
+						Search
+					</button>
+					<button id="inp-startover-submit" style="display: none">
+						Start Over
+					</button>
+				</td>
+			</tr>
+		</table>
+	</div>
+</div>
+</div>
+
+<div class="document-flip-container">
+
+	<div class="flippable">
+	<div id="category-stage" class="_stage_ face">
+		<div class="pad50">
+		<div class="page-instruction">
+			<div class="page-instruction-inner">
+				<div class="the-title">Looking for something?</div>
+				<div id="category-the-info" class="the-info">You can always find and compare products here, from lots of stores and for lots of models. <br /><br />Start by selecting the specific category over on the right. Or enter the keyword on the search box above.</div>
+			</div>
+		</div>
+		<div id="categories">
+			<div class="category" data-label="Laptop" data-image="laptop"></div>
+			<div class="category" data-label="Tablet PC" data-image="tablet"></div>
+			<div class="category" data-label="Desktop" data-image="desktop"></div>
+			<div class="category" data-label="Mobile Phone" data-image="phone"></div>
+			<div class="category" data-label="Television" data-image="tv"></div>
+			<div class="category" data-label="Fridge" data-image="fridge"></div>
+		</div>
+		</div>
+	</div>
+
+	<div id="product-stage" class="_stage_" style="display: none;"> <!-- Also Bookmark Stage -->
+		<div class="toolbar">
+			<ul class="toolbar-items">
+				<li><button id="my-bookmarks" class="bookmark-button">My Bookmarks</button></li>
+				<li><button id="my-comparator" class="comparator-button">Comparator</button></li>
+				<li><div class="space"></div></li>
+				<li><div class="text">Sort By:</div></li>
+				<li><div class="space"></div></li>
+				<li><button id="sort-by-rating" style="z-index: 50">Rating</button></li>
+				<li><button id="sort-by-price" style="z-index: 50">Price</button></li>
+				<li><button id="sort-by-brand" style="z-index: 50">Brand</button></li>
+			</ul>
+		</div>
+		<div id="stage">
+		
+		</div>
+	</div>
+	
+	<div id="product-infomation-stage" class="_stage_" style="display: none;">
+		<div class="toolbar">
+			<ul class="toolbar-items">
+				<li><button id="my-bookmarks" class="bookmark-button">My Bookmarks</button></li>
+				<li><button id="my-comparator" class="comparator-button">Comparator</button></li>
+				<li><div class="space"></div></li>
+				<li><button id="btnBackToProductSearch" class="backToSearch" style="z-index: 50">« Back to Search</button></li>
+			</ul>
+		</div>
+		<div id="product-info">
+		<div class="product_info_detail">
+			<div id="product-info-left" class="left" style="width: 47%; padding: 1%;">
+				<div id="product-info-image"></div>
+				<div class="clear"></div>
+				<!-- Block for product information -->
+				<div class="product_info_main">
+					<div class="left">
+						<div id="product-info-brand">$$$BRAND$$$</div>
+						<div id="product-info-model">$$$MODEL$$$</div>
+						<div id="product-info-rating" class="product_info_rating">$$$RATING$$$</div>
+					</div>
+					<div class="right" style="text-align: right">
+						<div>Lowest Price of</div>
+						<div id="product-info-price" class='product_info_price product_info_price_big'>$###PRICE###</div>
+						<div id="product-info-price-at" class="product_store_lowest">at $$$MINPRICESTORE$$$</div>
+					</div>
+				</div>
+				<div style="text-align: right; margin-top: 10px; margin-bottom: 10px;">
+					<button id="product-info-add-notebook" class="product_info_addtonotebook" data-id="$$$ID$$$">Compare this Product</button>
+					<button id="product-info-add-bookmark" class="product_info_bookmark" data-id="$$$ID$$$">Bookmark</button>
+				</div>
+				<div class="acc" data-default="on">
+					<div class="acc-title">Product Description</div>
+					<div id="product-info-description" class="acc-content">$$$PRODUCTDESC$$$</div>
+				</div>
+			</div>
+			<div id="product-info-right" class="left" style="width: 47%; padding: 1%;">
+				<div class="product_info_more">
+				<!-- Block for Product Description -->
+					<div style="margin-bottom: 10px;">
+						<div class="tab_fill" style="width: 2%;"></div>
+						<div id="tab-stores" class="tab_active" style="width: 20%">Stores &amp; Prices</div>
+						<div class="tab_fill" style="width: 1%;"></div>
+						<div id="tab-specs" class="tab" style="width: 20%">Specifications</div>
+						<div class="tab_fill" style="width: 1%;"></div>
+						<div id="tab-reviews" class="tab" style="width: 20%">Reviews</div>
+						<div class="tab_fill" style="width: 34%;"></div>
+						<div class="clear"></div>
+					</div>
+
+					<!-- Block for Specification -->
+					<div id="product-info-spec-block" style="display: none"><div id="product-info-specifications"></div></div>
+
+					<div id="product-info-stores-block" ><div id="product-info-stores"></div></div>
+				
+					<div id="product-info-review-block" style="display: none">
+					<div id="product_reviews_add_$$$ID$$$" class="product_review_box" style="display: none">
+						<div>Write your Review Here</div>
+						<div>
+							<input type="text" style="width: 80%" class="product-review-textbox" data-writeto="$$$ID$$$"/>
+						</div>
+					</div>
+					<div class="product_review_box_cannot">
+						Please log in using your spoil market account to rate and review this product.
+					</div>					
+					<div id="product-info-reviews"></div>
+					</div>
+				
+				</div>
+			
+			</div>
+		</div>
+	</div>
+	</div>
+	
+	<div id="login-stage" class="_stage_" style="display: none">
+		<div style="margin-top: 20px;">
+		<div class="left" style="width: 47%; padding: 1%;">
+			<div style="width: 80%; margin: auto;"><img src="assets/ad.jpg" style="width: 100%" /></div>
+			<div class="page-instruction-inner" style="width: 80%; margin: auto;">
+				<div class="the-title">Making informed choices no longer a pain in the ...</div>
+				<div class="the-info">SpoilMarket is literally meant for spoiling the market. Make informed choices, get the best deals and always walk away feeling good about yourself.</div>
+			</div>
+		</div>
+		<div class="left" style="width: 47%; padding: 1%;">
+			<div class="the-info">Login using your SpoilMarket credentials</div>
+			<div style="margin-top: 20px; font-weight: 600;">User Name</div>
+			<div><input type="text" id="txtUserName" style="width: 50%;" /></div>
+			<div></div>
+			<div style="margin-top: 20px; font-weight: 600;">Password</div>
+			<div><input type="text" id="txtPassword" style="width: 50%;" /></div>
+			<div></div>
+			<div style="margin-top: 20px;"><button id="btnDoLogin">Sign In</button></div>
+		</div>
+		</div>
+	</div>
+	
+	<div id="comparing-stage" class="_stage_" style="display: none; width: 100%;">
+		<div class="toolbar">
+			<ul class="toolbar-items">
+				<li><button id="btnBackToProductSearch" class="backToSearch" style="z-index: 50">« Back to Search</button></li>
+			</ul>
+		</div>
+		<div id="comparing-ground"></div>
+	</div>
+	
+	<div id="stores-stage" class="_stage_" style="display: none;">
+		<div class="toolbar">
+			<ul class="toolbar-items">
+				<li><button id="btnBackToProductInfo" class="backToProductInfo" style="z-index: 50">« Back to Product Information</button></li>
+			</ul>
+		</div>
+		<div style="Width: 100%">
+			<div id="map-sidebar">
+			<div class="the-title">Store Locations</div>
+				<div id="category-the-info" class="the-info">Click on Locate Store buttons to see it's location(s)</div>
+				<div id="map-product-image"></div>
+				<div id="map-product-brand"></div>
+				<div id="map-product-model"></div>
+				<div id="map-product-rating"></div>
+				<div id="map-product-stores"></div>
+			</div>
+			<div id="map-wrapper">
+				<div id="map">
+				
+				</div>
+			</div>
+		</div>
+	</div>
+	</div>
+	
+</div>
+<!-- ---------------------------------------------------------------------------------------------------------- -->
+<!-- ---------------------------------------------------------------------------------------------------------- -->
+<!-- ---------------------------------------------------------------------------------------------------------- -->
+<!-- ---------------------------------------------------------------------------------------------------------- -->
+<!-- ---------------------------------------------------------------------------------------------------------- -->
+<!-- ---------------------------------------------------------------------------------------------------------- -->
+<!-- ---------------------------------------------------------------------------------------------------------- -->
+<!-- ---------------------------------------------------------------------------------------------------------- -->
+<!-- ---------------------------------------------------------------------------------------------------------- -->
+<!-- ---------------------------------------------------------------------------------------------------------- -->
+<!-- ---------------------------------------------------------------------------------------------------------- -->
+<!-- ---------------------------------------------------------------------------------------------------------- -->
+
+<div id="templates">
+
+
+<!-- Template for Products / Product Info -->
+<!-- ---------------------------------------------------------------------------------------------------------- -->
+<!-- ---------------------------------------------------------------------------------------------------------- -->
+<!-- ---------------------------------------------------------------------------------------------------------- -->
+<!-- ---------------------------------------------------------------------------------------------------------- -->
+<!-- ---------------------------------------------------------------------------------------------------------- -->
+<!-- ---------------------------------------------------------------------------------------------------------- -->
+<!-- ---------------------------------------------------------------------------------------------------------- -->
+<!-- ---------------------------------------------------------------------------------------------------------- -->
+<!-- ---------------------------------------------------------------------------------------------------------- -->
+<!-- ---------------------------------------------------------------------------------------------------------- -->
+<!-- ---------------------------------------------------------------------------------------------------------- -->
+<!-- ---------------------------------------------------------------------------------------------------------- -->
+	<div id="product-template">
+		<div class="product_block flip-container" ontouchstart="this.classList.toggle('hover');">
+			<div id='product_block_image_$$$ID$$$' class="product_block_image product_$$$ID$$$" style="position: relative; background-image: url($$$URL$$$);">
+				<div class="product_block_rating">$$$RATING$$$</div>
+			</div>
+			<div class="flipper">
+				<div class="front">
+					<div class="product_detail">
+						<div class="product_detail_brand">$$$BRAND$$$</div>
+						<div>$$$MODEL$$$</div>
+						<div style="height: 10px"></div>
+						<div>From</div>
+						<div class='product_info_price product_info_price_thumbnail'>$###PRICE###</div>
+					</div>
+				</div>
+				<div class="back">
+					<div class="product_detail" style="vertical-align: middle;">
+						<button class="btnViewProductInfo" style="width: 100%; margin-bottom: 10px;" data-id="$$$ID$$$">Product Information</button>
+						<button class="btnCompareProduct" style="width: 100%; margin-bottom: 10px;" data-id="$$$ID$$$" data-action="$$$COMPARATORACTION$$$">$$$COMPARATORACTION$$$</button>
+						<button class="btnBookmarkProduct" style="width: 100%; margin-bottom: 10px;" data-id="$$$ID$$$">Bookmark</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+
+</body>
+</html>

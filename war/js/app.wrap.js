@@ -16,7 +16,7 @@
 					{
 						var ref = $('#' + idOfReference);
 						
-						that.height(ref.height() + 30);
+						that.height(ref.height());
 					}
 				}
 			});

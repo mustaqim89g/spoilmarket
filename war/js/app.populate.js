@@ -202,6 +202,7 @@ $(document).ready(function()
 	product_grid.search = search_product;
 	product_grid.setNoResultTemplate('product-no-result-template');
 	product_grid.sort = product_sortby_price;
+	product_grid.elementClickable = false;
 	
 	for (var i = 0; i < products.length; i++)
 	{
@@ -277,41 +278,7 @@ $(document).ready(function()
 		}
 		
 		product.imagesHtml = imageHtml;
-		product_grid.addElement(product);
-		
-		/*var spec_table = new Table('product_spec_' + product.id, 'product_spec_style', 'table_row', 'table_alternate_row', 'table_heading');
-		spec_table.addColumn('Specification', false, 0.4);
-		spec_table.addColumn('Description', false, 0.6);
-		
-		spec_table.addRow([ 'RAM', product.ram ]);
-		spec_table.addRow([ 'HDD', product.hdd ]);
-		spec_table.addRow([ 'Processor', product.cpu ]);
-		spec_table.addRow([ 'Processing Speed', product.cpu_speed ]);
-		spec_table.addRow([ 'GPU', product.gpu ]);
-		spec_table.addRow([ 'Screen', product.screen ]);
-		spec_table.addRow([ 'Screen Size', product.screen_size ]);
-		spec_table.addRow([ 'Operating System', product.os ]);
-		spec_table.addRow([ 'Offers', product.ram ]);
-		
-		spec_table.drawTable();*/
-		//spec_table.move();
-		
-		/*product.spec_table = spec_table;
-		
-		var store_table = new Table('product_stores_' + product.id, 'product_store_style', 'table_row', 'table_alternate_row', 'table_heading');
-		store_table.addColumn('Store', false, 0.6);
-		store_table.addColumn('Price', false, 0.4);
-		
-		for (var x = 0; x < product.stores.length; x++)
-		{
-			var s = product.stores[x];
-			store_table.addRow([s.store, '$' + s.price]);
-		}
-		
-		store_table.drawTable();
-		product.store_table = store_table;*/
-		//alert('drawn');
-		//store_table.move();		
+		product_grid.addElement(product);		
 	}
 	
 	
